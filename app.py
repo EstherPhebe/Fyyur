@@ -77,9 +77,6 @@ def venues():
 
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
-  # TODO: implement search on venues with partial string search. Ensure it is case-insensitive.
-  # seach for Hop should return "The Musical Hop".
-  # search for "Music" should return "The Musical Hop" and "Park Square Live Music & Coffee"
   form = request.form
   search_term=form.get('search_term')
   search = f'%{search_term}%'
@@ -181,8 +178,6 @@ def create_venue_submission():
       flash('An error occurred. Venue ' + form.name.data + ' could not be listed.')
     else:
       flash('Venue ' + form.name.data + ' was successfully listed!')
-  # TODO: on unsuccessful db insert, flash an error instead.
-  # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
   # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
     return render_template('pages/home.html')
 
@@ -205,7 +200,6 @@ def delete_venue(venue_id):
 @app.route('/artists')
 def artists():
   artists = Artist.query.all()
-  # TODO: replace with real data returned from querying the database
   data = []
   for artist in artists:
     artist_data={
@@ -343,7 +337,6 @@ def edit_venue(venue_id):
   form.image_link.data = venue.image_link
   form.seeking_talent.data = venue.seeking_venue
   form.seeking_description.data = venue.seeking_description
-  # TODO: populate form with values from venue with ID <venue_id>
   return render_template('forms/edit_venue.html', form=form, venue=venue)
 
 @app.route('/venues/<int:venue_id>/edit', methods=['POST'])
@@ -424,12 +417,11 @@ def create_artist_submission():
 @app.route('/shows')
 def shows():
   # displays list of shows at /shows
-  # TODO: replace with real venues data.
   shows = Show.query.join(Artist).join(Venue)
   data = []
   for show in shows:
     print(show)
-    show_data={
+      show_data={
       "venue_id": show.venue_id,
       "venue_name": show.venue.name,
       "artist_id": show.artist_id,
@@ -467,15 +459,11 @@ def create_show_submission():
     db.session.rollback()
     print(sys.exc_info())
   # called to create new shows in the db, upon submitting new show listing form
-  # TODO: insert form data as a new Show record in the db, instead
   if (error):
     flash('An error occurred')
   # on successful db insert, flash success
   else:
     flash('Show was successfully listed!')
-  # TODO: on unsuccessful db insert, flash an error instead.
-  # e.g., flash('An error occurred. Show could not be listed.')
-  # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
   return render_template('pages/home.html')
 
 @app.errorhandler(404)
